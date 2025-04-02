@@ -1,8 +1,19 @@
+"use client"
+
 import Header from "@/components/Header";
 import Particles from "@/components/Particles";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUrlForm } from "@/hooks/useUrlForm";
 
 export default function Home() {
+  const { register, handleSubmit, formState: { errors },  } = useUrlForm();
+
+  const onSubmit = (data: { productUrl: string}) => {
+    console.log("URL enviada", data.productUrl);
+  }
+
+
   return (
     <main className="h-screen">
       <Header />
@@ -15,8 +26,22 @@ export default function Home() {
 
         <p className="text-zinc-400 font-medium select-none">Detectamos dropshipping para você. Basta colar o link!</p>
        </div>
-        <Input placeholder="Cole seu link aqui!" className="w-3xl">
-        </Input>
+        
+       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-2 w-full max-w-lg">
+        <div className="flex w-full items-center gap-2">
+          <Input
+            placeholder="Cole o link do produto aqui!"
+            className="flex-1"
+            {...register("productUrl")}
+          />
+          <Button variant="outline" type="submit">Verificar</Button>
+        </div>
+
+        {errors.productUrl && (
+          <p className="text-red-500 text-sm self-start font-semibold">{errors.productUrl.message}</p>
+        )}
+      </form>
+
       </section>
 
       <Particles />
