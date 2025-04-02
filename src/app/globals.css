@@ -120,3 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.custom-outline {
+  -webkit-text-stroke: 2px white;
+}
