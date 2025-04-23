@@ -3,9 +3,11 @@
 import Header from "@/components/Header";
 import Particles from "@/components/Particles";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useGetProduct } from "@/hooks/useGetProduct";
 import { useUrlForm } from "@/hooks/useUrlForm";
+import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
 
 export default function Home() {
@@ -58,24 +60,22 @@ export default function Home() {
       
       
       {mutation.isSuccess && mutation.data && mutation.data.data && (
-        <div>
-          <h3>Produto encontrado</h3>
-          <p>Loja: {mutation.data.data.storeName || "Nome da loja não disponível"}</p>
-          <p>Loja: {mutation.data.data.productName || "Nome do produto não encontrado"}</p>
-          <p>Preço: {mutation.data.data.price || "Preço não disponível"}</p>
-          <p>Entrega: {mutation.data.data.estimatedShipping || "Informação de entrega não disponível"}</p>
-          <p>
-            URL do Produto:{" "}
-            <a
-              href={mutation.data.data.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-            >
-              {mutation.data.data.sourceUrl || "URL não disponível"}
-            </a>
-          </p>
-          {mutation.data.data.imageUrl && (
+        <a href={mutation.data.data.sourceUrl} >
+          <Card>
+          <CardHeader>
+            <CardTitle>
+            {mutation.data.data.storeName || "Nome da loja não disponível"}
+            <br />
+            {mutation.data.data.productName || "Nome do produto não encontrado"}
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <p>{truncateText(mutation.data.data.description, 50)}</p>
+
+            <p>Preço: {mutation.data.data.price || "Preço não disponível"}</p>
+            <p>Entrega: {mutation.data.data.estimatedShipping || "Informação de entrega não disponível"}</p>
+            {mutation.data.data.imageUrl && (
             <Image 
             src={mutation.data.data.imageUrl} 
             alt={`Imagem do produto: ${mutation.data.data.storeName}`}
@@ -84,7 +84,11 @@ export default function Home() {
             className="object-contain mt-4"
             />
           )}
-        </div>
+
+          <p>{mutation.data.data.sourceUrl}</p>
+          </CardContent>
+        </Card>
+        </a>
       )}
 
       </section>

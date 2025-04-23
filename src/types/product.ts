@@ -1,6 +1,7 @@
 interface IProductData {
   storeName: string,
   productName: string,
+  description: string,
   imageUrl: string,
   price: string,
   estimatedShipping: string,
