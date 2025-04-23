@@ -4,14 +4,20 @@ import Header from "@/components/Header";
 import Particles from "@/components/Particles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useGetProduct } from "@/hooks/useGetProduct";
 import { useUrlForm } from "@/hooks/useUrlForm";
+import Image from "next/image";
 
 export default function Home() {
   const { register, handleSubmit, formState: { errors },  } = useUrlForm();
+  const mutation = useGetProduct();
 
   const onSubmit = (data: { productUrl: string}) => {
-    console.log("URL enviada", data.productUrl);
+    mutation.mutate(
+      { url: data.productUrl},
+    )
   }
+
 
 
   return (
@@ -32,15 +38,54 @@ export default function Home() {
           <Input
             placeholder="Cole o link do produto aqui!"
             className="flex-1"
-            {...register("productUrl")}
+            {...register("productUrl", {required: "O link do produto é obrigatorio."})}
           />
-          <Button variant="outline" type="submit">Verificar</Button>
+          <Button variant="outline" type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Verificando..." : "Verificar"}
+          </Button>
         </div>
 
         {errors.productUrl && (
           <p className="text-red-500 text-sm self-start font-semibold">{errors.productUrl.message}</p>
         )}
       </form>
+
+      {mutation.isError && (
+        <p className="text-red-500 text-sm font-semibold">
+          Erro: {mutation.error?.message || "Algo deu Errado. Tente novamente."}
+        </p>
+      )}
+      
+      
+      {mutation.isSuccess && mutation.data && mutation.data.data && (
+        <div>
+          <h3>Produto encontrado</h3>
+          <p>Loja: {mutation.data.data.storeName || "Nome da loja não disponível"}</p>
+          <p>Loja: {mutation.data.data.productName || "Nome do produto não encontrado"}</p>
+          <p>Preço: {mutation.data.data.price || "Preço não disponível"}</p>
+          <p>Entrega: {mutation.data.data.estimatedShipping || "Informação de entrega não disponível"}</p>
+          <p>
+            URL do Produto:{" "}
+            <a
+              href={mutation.data.data.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              {mutation.data.data.sourceUrl || "URL não disponível"}
+            </a>
+          </p>
+          {mutation.data.data.imageUrl && (
+            <Image 
+            src={mutation.data.data.imageUrl} 
+            alt={`Imagem do produto: ${mutation.data.data.storeName}`}
+            width={300} 
+            height={300} 
+            className="object-contain mt-4"
+            />
+          )}
+        </div>
+      )}
 
       </section>
 
