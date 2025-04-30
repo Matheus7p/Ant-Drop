@@ -46,7 +46,7 @@ const Particles: React.FC = () => {
       draw() {
         if (!ctx) return;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 20, false);
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();

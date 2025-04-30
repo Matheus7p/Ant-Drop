@@ -3,12 +3,13 @@
 import Header from "@/components/Header";
 import Particles from "@/components/Particles";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useGetProduct } from "@/hooks/useGetProduct";
 import { useUrlForm } from "@/hooks/useUrlForm";
 import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
+import { saveProductToLocalStorage } from "./services/saveProductToLocalStorage";
 
 export default function Home() {
   const { register, handleSubmit, formState: { errors },  } = useUrlForm();
@@ -18,6 +19,8 @@ export default function Home() {
     mutation.mutate(
       { url: data.productUrl},
     )
+
+    saveProductToLocalStorage(data.productUrl)
   }
 
 
@@ -61,32 +64,25 @@ export default function Home() {
       
       {mutation.isSuccess && mutation.data && mutation.data.data && (
         <a href={mutation.data.data.sourceUrl} >
-          <Card>
-          <CardHeader>
-            <CardTitle>
-            {mutation.data.data.storeName || "Nome da loja não disponível"}
-            <br />
-            {mutation.data.data.productName || "Nome do produto não encontrado"}
-            </CardTitle>
-          </CardHeader>
+          <Card className="flex flex-row w-[700px] justify-between">
+            <CardHeader className="w-[400]">
+              <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Nome da Loja: </span>{mutation.data.data.storeName || "Nome da loja não disponível"}</p>
+              <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Nome do Produto: </span>{mutation.data.data.productName || "Nome do produto não encontrado"}</p>
+              <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Descrição: </span>{truncateText(mutation.data.data.description || "Descrição não disponível", 100)}</p>
+              <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Preço: </span> {mutation.data.data.price || "Preço não disponível"}</p>
+              <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Entrega: </span>{mutation.data.data.estimatedShipping || "Informação de entrega não disponível, sinal de que eles não tem o produto!!!".toUpperCase()}</p>            </CardHeader>
 
-          <CardContent>
-            <p>{truncateText(mutation.data.data.description, 50)}</p>
-
-            <p>Preço: {mutation.data.data.price || "Preço não disponível"}</p>
-            <p>Entrega: {mutation.data.data.estimatedShipping || "Informação de entrega não disponível"}</p>
-            {mutation.data.data.imageUrl && (
-            <Image 
-            src={mutation.data.data.imageUrl} 
-            alt={`Imagem do produto: ${mutation.data.data.storeName}`}
-            width={300} 
-            height={300} 
-            className="object-contain mt-4"
-            />
-          )}
-
-          <p>{mutation.data.data.sourceUrl}</p>
-          </CardContent>
+            <CardContent>
+              {mutation.data.data.imageUrl && (
+              <Image 
+              src={mutation.data.data.imageUrl} 
+              alt={`Imagem do produto: ${mutation.data.data.storeName}`}
+              width={300} 
+              height={300} 
+              className="object-contain mt-4"
+              />
+            )}
+            </CardContent>
         </Card>
         </a>
       )}
