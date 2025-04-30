@@ -1,24 +1,18 @@
 import { getBrowser } from "@/lib/browser";
 import { cohere } from "@/lib/cohereClient";
-import { IProduct } from "@/types/product";
+import { IProductBasic } from "@/types/product";
 
 export async function scrapePageContent(url: string): Promise<string> {
   const browser = await getBrowser();
   const context = await browser.newContext({ userAgent: 'Mozilla/5.0', locale: 'pt-BR' });
   const page = await context.newPage();
-  try {
-    await page.goto(url, { timeout: 15000, waitUntil: 'domcontentloaded' });
-    const content = await page.content();
-    return content;
-  } catch (error) {
-    console.error("Erro ao raspar o conteúdo da página:", error);
-    throw new Error("Erro ao raspar o conteúdo da página.");
-  } finally {
-    await browser.close();
-  }
+  await page.goto(url, { timeout: 15000, waitUntil: 'domcontentloaded' });
+  const content = await page.content();
+
+  return content;
 }
 
-export async function extractProductInfo(htmlContent: string, productUrl: string): Promise<IProduct> {
+export async function extractProductInfo(htmlContent: string, productUrl: string): Promise<IProductBasic> {
   const prompt = `
   Analise o HTML da página de um produto fornecido abaixo e extraia as seguintes informações, se disponíveis:
 
@@ -64,7 +58,7 @@ export async function extractProductInfo(htmlContent: string, productUrl: string
   const jsonStringWithMarkdown = cohereContentArray[0].text;
   const jsonString = jsonStringWithMarkdown.replace(/```json\n|```/g, '').trim(); 
 
-  const productInfo = JSON.parse(jsonString) as IProduct;
+  const productInfo = JSON.parse(jsonString) as IProductBasic;
 
   return productInfo;
   

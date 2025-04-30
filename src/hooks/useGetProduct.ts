@@ -1,19 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { IProduct } from "@/types/product";
+import { IProductResponse } from "@/types/product";
+
 
 interface PostData {
-  url: string
+  url: string;
 }
 
-const getProductWithUrl = async (data: PostData): Promise<IProduct> => {
-  const res = await axios.post<IProduct>("/api/scrape", data);
-  return res.data
-}
+const getProductWithUrl = async (data: PostData): Promise<IProductResponse> => {
+  const res = await axios.post<IProductResponse>("/api/scrape", data);
+  return res.data;
+};
 
 export const useGetProduct = () => {
-  return useMutation<IProduct, Error, PostData>({
-    mutationFn: getProductWithUrl
+  return useMutation<IProductResponse, Error, PostData>({
+    mutationFn: getProductWithUrl,
   });
-}
-
+};
