@@ -1,5 +1,5 @@
-import { scrapePageContent, extractProductInfo } from "@/app/services/scrapeProduct";
-import { extractReclameAquiInfo, scrapeReclameAquiContent } from "@/app/services/scrapeStoreInReclameAqui";
+import { scrapePageContent, extractProductInfo } from "@/services/scrapeProduct";
+import { extractReclameAquiInfo, scrapeReclameAquiContent } from "@/services/scrapeStoreInReclameAqui";
 import { IProductResponse } from "@/types/product";
 import { NextResponse } from "next/server";
 

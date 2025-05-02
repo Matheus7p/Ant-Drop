@@ -21,7 +21,7 @@ export async function extractProductInfo(htmlContent: string, productUrl: string
   - Preço do produto: Tente encontrar o preço atual do produto.
   - Descrição do produto: Tente encontrar a descrição do produto e encurte ela por favor.
   - URL da imagem do produto: Tente encontrar a URL da imagem principal do produto.
-  - Data de entrega (se disponível e em um formato reconhecível como data): Tente encontrar a data estimada de entrega. Se não estiver disponível ou não for claramente uma data, retorne null.
+  - Data de envio (se disponível e em um formato reconhecível como data): Tente encontrar a data estimada de envio. Se não estiver disponível ou não for claramente uma data, retorne null.
   - URL do produto: (nesse caso, apenas retorne a url do produto) ${productUrl}
 
   Se uma informação específica não estiver claramente presente no HTML, retorne null para esse campo.

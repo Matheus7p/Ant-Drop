@@ -5,6 +5,5 @@ export interface IReclameAquiInfo {
   customersWouldReturn: string,
   latestComplaints: { 
     title: string; 
-    text: string; 
-    date: string }[],
+    text: string; }[],
 }

@@ -17,11 +17,11 @@ export async function extractReclameAquiInfo(htmlContent: string): Promise<IRecl
   const prompt = `
   Analise o HTML da página do Reclame Aqui fornecido abaixo e extraia as seguintes informações, se disponíveis:
 
-  - Reputação da loja: Indique se é "Ótima", "Boa", "Regular", "Ruim" ou "Péssima".
+  - Reputação da loja: Indique se é "Ótima", "Boa", "Regular", "Ruim" ou "Péssima" e a numeração "7/10", "5.5/10" na mesma string.
   - Número de reclamações nos últimos 12 meses.
   - Percentual de reclamações respondidas.
   - Percentual de clientes que voltariam a fazer negócio.
-  - Exemplos de últimas reclamações (título, texto e data de postagem).
+  - Exemplos de últimas reclamações (título e texto).
 
   Se uma informação específica não estiver claramente presente no HTML, retorne null para esse campo.
 
@@ -36,8 +36,8 @@ export async function extractReclameAquiInfo(htmlContent: string): Promise<IRecl
     "responseRate": "...",
     "customersWouldReturn": "...",
     "latestComplaints": [
-      { "title": "...", "text": "...", "date": "dd/mm/aaaa" },
-      { "title": "...", "text": "...", "date": "dd/mm/aaaa" }
+      { "title": "...", "text": "..." },
+      { "title": "...", "text": "..." }
     ]
   }
   \`\`\`
