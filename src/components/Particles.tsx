@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
 const Particles: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -15,18 +15,17 @@ const Particles: React.FC = () => {
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      const parent = canvas.parentElement;
-      if (parent) {
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-      }
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
     resizeCanvas();
 
-    window.addEventListener("resize", resizeCanvas);
-
-    const particleColor = theme === "dark" ? "#ffffff" : "#000000";
-    const lineColor = theme === "dark" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)";
+    const particleColor =
+      (theme === "system" ? systemTheme : theme) === "dark" ? "#ffffff" : "#000000";
+    const lineColor =
+      (theme === "system" ? systemTheme : theme) === "dark"
+        ? "rgba(255, 255, 255, 0.5)"
+        : "rgba(0, 0, 0, 0.5)";
 
     class Particle {
       x: number;
@@ -46,15 +45,14 @@ const Particles: React.FC = () => {
       draw() {
         if (!ctx) return;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 20, false);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();
       }
 
       update() {
-        if (!canvas) return;
-
+        if(!canvas) return;
         this.x += this.velocity.x;
         this.y += this.velocity.y;
 
@@ -95,7 +93,10 @@ const Particles: React.FC = () => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `${lineColor.replace("0.5", (1 - distance / 100).toString())}`;
+            ctx.strokeStyle = lineColor.replace(
+              "0.5",
+              (1 - distance / 100).toFixed(2)
+            );
             ctx.lineWidth = 0.5;
             ctx.stroke();
             ctx.closePath();
@@ -105,7 +106,6 @@ const Particles: React.FC = () => {
     };
 
     const animate = () => {
-      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((particle) => particle.update());
       connectParticles();
@@ -123,13 +123,15 @@ const Particles: React.FC = () => {
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("resize", handleResize);
     };
-  }, [theme]);
+  }, [theme, systemTheme]);
 
   return (
-    <canvas ref={canvasRef} className="absolute top-0 left-0 w-full pointer-events-none" />
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1]"
+    />
   );
 };
 

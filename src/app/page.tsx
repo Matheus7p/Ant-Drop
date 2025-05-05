@@ -9,7 +9,6 @@ import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
 import { saveProductToLocalStorage } from "../services/saveProductToLocalStorage";
 import { calculateProductReliability } from "@/utils/calculateProductReliability";
-import Particles from "@/components/Particles";
 
 export default function Home() {
   const { register, handleSubmit, formState: { errors },  } = useUrlForm();
@@ -21,9 +20,9 @@ export default function Home() {
   }
 
   return (
-    <main className="">
+    <main>
       <section className="flex flex-col justify-center items-center gap-6">
-       <div className="flex flex-col justify-center items-center gap-2">
+       <div className="flex flex-col justify-center items-center gap-4">
         <h1 className="text-9xl font-bold text-transparent bg-clip-text select-none dark:[-webkit-text-stroke:2px_theme(colors.zinc.200)] [-webkit-text-stroke:2px_theme(colors.zinc.800)]">
           Ant-Drop
         </h1>
@@ -57,7 +56,7 @@ export default function Home() {
       </section>
       <section className="flex flex-col lg:flex-row justify-center items-start space-y-10 mt-10 gap-6">
       {mutation.isSuccess && mutation.data &&  (
-            <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[480px] justify-between">
+            <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between">
               <CardHeader className="grid-rows-0 gap-2 w-[400]">
                 <p className="font-semibold text-xl text-zinc-600 dark:text-zinc-400">{mutation.data?.data?.storeName || "Nome da loja não disponível"}</p>
                 <p className="font-light text-zinc-600 dark:text-zinc-400"><span className="font-semibold text-lg">Nome do Produto: </span>{mutation.data.data.productName || "Nome do produto não encontrado"}</p>
@@ -69,18 +68,18 @@ export default function Home() {
               <CardContent>
                 {mutation.data.data.imageUrl && (
                 <Image 
-                src={mutation.data.data.imageUrl} 
-                alt={`Imagem do produto: ${mutation.data.data.storeName}`}
-                width={300} 
-                height={300} 
-                className="object-contain mt-4"
+                  src={mutation.data.data.imageUrl} 
+                  alt={`Imagem do produto: ${mutation.data.data.storeName}`}
+                  width={300} 
+                  height={300} 
+                  className="object-contain mt-4"
                 />
               )}
               </CardContent>
           </Card>
         )}
         {mutation.data?.reclameAquiInfo && mutation.data.data?.storeName &&(
-          <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[480px] justify-between">
+          <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[470px] justify-between">
             <CardHeader>
               <CardTitle>
                 <h4 className="font-light text-zinc-600 dark:text-zinc-400">Reputação da <span className="text-zinc-400 font-semibold text-lg">{mutation.data.data.storeName} </span>no Reclame Aqui</h4>
@@ -106,7 +105,6 @@ export default function Home() {
           </Card>
         )}
       </section>
-      <Particles />
     </main>
   );
 }
