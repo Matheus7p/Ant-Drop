@@ -17,7 +17,7 @@ export async function extractReclameAquiInfo(htmlContent: string): Promise<IRecl
   const prompt = `
   Analise o HTML da página do Reclame Aqui fornecido abaixo e extraia as seguintes informações, se disponíveis:
 
-  - Reputação da loja: Indique se é "Ótima", "Boa", "Regular", "Ruim" ou "Péssima" e a numeração "7/10", "5.5/10" na mesma string.
+  - Reputação da loja: Indique se é "Ótima", "Boa", "Regular", "Ruim" ou "Péssima" e a numeração ex: "7/10", "5.5/10" e etc. na mesma string.
   - Número de reclamações nos últimos 12 meses.
   - Percentual de reclamações respondidas.
   - Percentual de clientes que voltariam a fazer negócio.

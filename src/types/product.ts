@@ -14,4 +14,5 @@ export interface IProductResponse {
   success: boolean,
   data: IProductBasic
   reclameAquiInfo: IReclameAquiInfo,
+  relatedProduct: IProductBasic[],
 }
