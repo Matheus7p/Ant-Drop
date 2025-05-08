@@ -6,6 +6,9 @@ import { truncateText } from "@/utils/truncateText";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "../Loading";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 interface IProductAndReclameAqui {
   product: IProductResponse["data"];
@@ -25,6 +28,14 @@ function History() {
       }
       setIsLoading(false);
     }, 2000);
+
+    AOS.init({
+      duration: 1000, 
+      offset: 200, 
+      easing: "ease-in-out", 
+      once: true, 
+    });
+
     return () => clearTimeout(timeout);
   }, []);
 
@@ -46,7 +57,7 @@ function History() {
                 className="flex flex-col lg:flex-row justify-center items-start space-y-10 mt-10 gap-6"
                 key={index}
               >
-                <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between">
+                <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between" data-aos="fade-right">
                   <CardHeader className="grid-rows-0 gap-2 w-[400]">
                     <p className="font-semibold text-xl text-zinc-600 dark:text-zinc-400">
                       {item.product?.storeName || "Nome da loja não disponível"}
@@ -89,7 +100,7 @@ function History() {
                   </CardContent>
                 </Card>
 
-                <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[470px]">
+                <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[470px]" data-aos="fade-left">
                   <CardHeader>
                     <CardTitle>
                       <h4 className="font-light text-zinc-600 dark:text-zinc-400">

@@ -10,6 +10,8 @@ import Image from "next/image";
 import { saveProductToLocalStorage } from "../services/saveProductToLocalStorage";
 import { calculateProductReliability } from "@/utils/calculateProductReliability";
 import Loading from "@/app/Loading";
+import AOS from "aos";
+import { useEffect } from "react";
 
 export default function Home() {
   const {
@@ -24,6 +26,16 @@ export default function Home() {
     saveProductToLocalStorage(data.productUrl);
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, 
+      offset: 200, 
+      easing: "ease-in-out", 
+      once: true, 
+    });
+  }, []);
+
+  
   return (
     <main>
       {mutation.isPending &&( <Loading /> )}
@@ -81,7 +93,7 @@ export default function Home() {
 
       <section className="flex flex-col lg:flex-row justify-center items-start space-y-10 mt-10 gap-6">
         {mutation.isSuccess && mutation.data && (
-          <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between">
+          <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between" data-aos="fade-right">
             <CardHeader className="grid-rows-0 gap-2 w-[400]">
               <p className="font-semibold text-xl text-zinc-600 dark:text-zinc-400">
                 {mutation.data?.data?.storeName ||
@@ -124,7 +136,7 @@ export default function Home() {
           </Card>
         )}
         {mutation.data?.reclameAquiInfo && mutation.data.data?.storeName && (
-          <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[470px] ">
+          <Card className="flex flex-col w-auto md:w-[700px] h-auto md:h-[470px] " data-aos="fade-left">
             <CardHeader>
               <CardTitle>
                 <h4 className="font-light text-zinc-600 dark:text-zinc-400">
@@ -205,6 +217,7 @@ export default function Home() {
           <Card
             key={index}
             className="w-full md:w-[350px] h-auto flex"
+            data-aos="flip-up"
           >
             <CardHeader className="grid-rows-0 gap-2">
               <p className="font-semibold text-lg text-zinc-600 dark:text-zinc-400 truncate">
