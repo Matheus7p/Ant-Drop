@@ -9,6 +9,7 @@ import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
 import { saveProductToLocalStorage } from "../services/saveProductToLocalStorage";
 import { calculateProductReliability } from "@/utils/calculateProductReliability";
+import Loading from "@/app/Loading";
 
 export default function Home() {
   const {
@@ -25,6 +26,7 @@ export default function Home() {
 
   return (
     <main>
+      {mutation.isPending &&( <Loading /> )}
       <section className="flex flex-col justify-center items-center gap-6">
         <div className="flex flex-col justify-center items-center gap-4">
           <h1 className="text-9xl font-bold text-transparent bg-clip-text select-none dark:[-webkit-text-stroke:2px_theme(colors.zinc.200)] [-webkit-text-stroke:2px_theme(colors.zinc.800)]">
@@ -52,7 +54,7 @@ export default function Home() {
               type="submit"
               disabled={mutation.isPending}
             >
-              {mutation.isPending ? "Verificando..." : "Verificar"}
+             Verificar
             </Button>
           </div>
           {errors.productUrl && (
@@ -76,6 +78,7 @@ export default function Home() {
           </div>
         )}
       </section>
+
       <section className="flex flex-col lg:flex-row justify-center items-start space-y-10 mt-10 gap-6">
         {mutation.isSuccess && mutation.data && (
           <Card className="flex flex-col md:flex-row w-auto md:w-[700px] h-auto md:h-[470px] justify-between">
