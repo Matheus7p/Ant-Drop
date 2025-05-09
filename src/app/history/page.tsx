@@ -8,6 +8,7 @@ import Image from "next/image";
 import Loading from "../Loading";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Button } from "@/components/ui/button";
 
 
 interface IProductAndReclameAqui {
@@ -39,6 +40,12 @@ function History() {
     return () => clearTimeout(timeout);
   }, []);
 
+  function handleClearLocalStorage () {
+    console.log("Botão clicado!");
+    localStorage.clear()
+    window.location.reload();
+  }
+
   return (
     <main>
       {isLoading ? (
@@ -51,6 +58,7 @@ function History() {
           <p className="text-zinc-400 font-medium select-none">
             Seu histórico de produtos pesquisados!
           </p>
+          {history.length > 0 && (<Button variant="outline" onClick={handleClearLocalStorage}>Limpar Histórico</Button >)}
           {history.length > 0 &&
             history.map((item, index) => (
               <section
